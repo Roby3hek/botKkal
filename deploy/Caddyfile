@@ -1,0 +1,19 @@
+# Caddy сам получает и продлевает сертификат Let's Encrypt.
+# Замени kkal.example.com на свой домен и укажи его же в config.json -> webapp.url.
+kkal.example.com {
+	encode zstd gzip
+
+	# Фото еды приходит в base64 — 8 МБ хватает с запасом.
+	request_body {
+		max_size 8MB
+	}
+
+	reverse_proxy 127.0.0.1:8080 {
+		header_up X-Real-IP {remote_host}
+	}
+
+	log {
+		output file /var/log/caddy/kkal.log
+		format console
+	}
+}

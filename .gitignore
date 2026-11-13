@@ -1,0 +1,10 @@
+# секреты и данные
+config.json
+data/
+
+# python
+__pycache__/
+*.py[cod]
+
+# мусор после тестов
+_selftest-*/

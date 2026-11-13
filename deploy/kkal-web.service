@@ -1,0 +1,32 @@
+[Unit]
+Description=kkal — HTTP-сервер мини-приложения (за Caddy)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kkal
+Group=kkal
+WorkingDirectory=/opt/kkal
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+# Слушаем только петлю: наружу выставлен Caddy с https.
+ExecStart=/usr/bin/python3 /opt/kkal/server.py --host 127.0.0.1 --port 8080
+Restart=always
+RestartSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/kkal/data
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kkal-web
+
+[Install]
+WantedBy=multi-user.target

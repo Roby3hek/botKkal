@@ -1,0 +1,32 @@
+[Unit]
+Description=kkal — бот-дневник КБЖУ (long polling)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kkal
+Group=kkal
+WorkingDirectory=/opt/kkal
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /opt/kkal/bot.py
+Restart=always
+RestartSec=5
+
+# Боту нужен только каталог с данными и сеть — остальное закрываем.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/kkal/data
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kkal-bot
+
+[Install]
+WantedBy=multi-user.target
