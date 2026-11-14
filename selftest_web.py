@@ -172,6 +172,10 @@ def scenario_auth() -> None:
     status, _ = call(demo_api, "GET", "/api/session", init=signed()[:-4] + "beef")
     check(status == 401, "в демо-режиме битая подпись всё равно отклонена")
 
+    demo_owner = make_api(demo=True, owner=777)
+    status, payload = call(demo_owner, "GET", "/api/day", init=None)
+    check(status == 200, "демо-режим открыт и при заданном owner_id")
+
 
 def scenario_day(api: WebAPI) -> None:
     head("День, блюда и записи")

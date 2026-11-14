@@ -154,6 +154,11 @@ class WebAPI:
         raise ApiError("нужен initData от Telegram", 401)
 
     def _owner_ok(self, user: dict) -> bool:
+        # Демо-режим запускают руками (--demo) и смотрят в браузере: там нет
+        # initData, поэтому гостем будет «Демо», а не владелец. Иначе с заданным
+        # owner_id локальный просмотр упирался бы в 403.
+        if self.demo:
+            return True
         if not self.owner_id and not self.owner_username:
             return True
         if self.owner_id and int(user.get("id") or 0) == self.owner_id:

@@ -233,7 +233,7 @@ def main() -> None:
     args = parser.parse_args()
 
     bot_module.CONFIG_PATH = args.config
-    bot_module.setup_logging()
+    bot_module.setup_logging("data/web.log")
     logging.getLogger().setLevel(args.log_level.upper())
 
     config = bot_module.load_config()

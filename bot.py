@@ -55,8 +55,8 @@ EXAMPLE_CONFIG = {
 }
 
 
-def setup_logging() -> None:
-    os.makedirs("data", exist_ok=True)
+def setup_logging(log_file: str = "data/bot.log") -> None:
+    os.makedirs(os.path.dirname(log_file) or ".", exist_ok=True)
     for stream in (sys.stdout, sys.stderr):
         try:
             stream.reconfigure(encoding="utf-8", errors="replace")
@@ -65,7 +65,7 @@ def setup_logging() -> None:
     fmt = "%(asctime)s %(levelname)-7s %(name)s: %(message)s"
     handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]
     try:
-        handlers.append(logging.FileHandler("data/bot.log", encoding="utf-8"))
+        handlers.append(logging.FileHandler(log_file, encoding="utf-8"))
     except OSError:
         pass
     logging.basicConfig(level=logging.INFO, format=fmt, datefmt="%H:%M:%S", handlers=handlers)
